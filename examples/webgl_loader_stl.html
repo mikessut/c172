@@ -44,10 +44,13 @@
 			<form>
 				<input id="clickMe" type="button" value="Yaw Left" onclick="yaw(Math.PI /     20);"/>
 				<input id="clickMe" type="button" value="Yaw Right" onclick="yaw(-Math.PI /   20);"/>
-
 				<br>
 				<input id="clickMe" type="button" value="Bank Left" onclick="bank(Math.PI /   20 );"/>
 				<input id="clickMe" type="button" value="Bank Right" onclick="bank(-Math.PI / 20 );"/>
+				<br>
+				<input id="clickMe" type="button" value="Move Left" onclick="trans( -0.1 );"/>
+				<input id="clickMe" type="button" value="Movie Right" onclick="trans( 0.1 );"/>
+
 			</form>
 		</div>
 
@@ -86,6 +89,11 @@
 				console.log("bank");
 
 				plane_mesh.rotateOnWorldAxis( new THREE.Vector3(1,0,0), angle);
+			}
+
+			function trans(z) {
+				console.log("trans");
+				plane_mesh.translateY( z );
 			}
 
 			function init() {
