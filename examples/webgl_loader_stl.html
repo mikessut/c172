@@ -42,7 +42,12 @@
 			STL loader test by <a href="https://github.com/aleeper">aleeper</a>. PR2 head from <a href="http://www.ros.org/wiki/pr2_description">www.ros.org</a> -->
 			INFO BLOCK
 			<form>
-				<input id="clickMe" type="button" value="go" onclick="myfunc();"/>
+				<input id="clickMe" type="button" value="Yaw Left" onclick="yaw(Math.PI /     20);"/>
+				<input id="clickMe" type="button" value="Yaw Right" onclick="yaw(-Math.PI /   20);"/>
+
+				<br>
+				<input id="clickMe" type="button" value="Bank Left" onclick="bank(Math.PI /   20 );"/>
+				<input id="clickMe" type="button" value="Bank Right" onclick="bank(-Math.PI / 20 );"/>
 			</form>
 		</div>
 
@@ -71,14 +76,16 @@
 
 			var plane_mesh;
 
-			function myfunc() {
-				console.log("myfunc");
-				var x = plane_mesh.rotation.x;
-				var y = plane_mesh.rotation.y;
-				var z = plane_mesh.rotation.z;
-				console.log("x,y,z: " + x + "," + y + "," + z);
-				//plane_mesh.rotation.set( -Math.PI / 2, 0, z + Math.PI / 6);
-				plane_mesh.rotateOnWorldAxis( new THREE.Vector3(0,1,0), Math.PI / 6);
+			function yaw(angle) {
+				console.log("yaw");
+
+				plane_mesh.rotateOnWorldAxis( new THREE.Vector3(0,1,0), angle);
+			}
+
+			function bank(angle) {
+				console.log("bank");
+
+				plane_mesh.rotateOnWorldAxis( new THREE.Vector3(1,0,0), angle);
 			}
 
 			function init() {
@@ -87,7 +94,7 @@
 				document.body.appendChild( container );
 
 				camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 15 );
-				camera.position.set( 3, 0.15, 3 );
+				camera.position.set( 3, 0.15, 0 );
 
 				cameraTarget = new THREE.Vector3( 0, -0.25, 0 );
 
@@ -112,24 +119,7 @@
 				// ASCII file
 
 				var loader = new THREE.STLLoader();
-				/*
-				loader.load( './models/stl/ascii/slotted_disk.stl', function ( geometry ) {
 
-					var material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
-					var mesh = new THREE.Mesh( geometry, material );
-
-					mesh.position.set( 0, - 0.25, 0.6 );
-					mesh.rotation.set( 0, - Math.PI / 2, 0 );
-					mesh.scale.set( 0.5, 0.5, 0.5 );
-
-					//mesh.castShadow = true;
-					//mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-				} );*/
-
-				//var loader = new THREE.STLLoader();
 
 				loader.load( './models/stl/ascii/c172.stl', function ( geometry ) {
 
@@ -138,10 +128,12 @@
 
 					//mesh.position.set( 0, - 0.25, 0.6 );
 					//mesh.rotation.set( 0, - Math.PI / 2, 0 );
-					mesh.position.set( 0, 0, 0.6 );
+					mesh.position.set( 0, 0, 0 );
 					mesh.rotation.set( -Math.PI / 2, 0, 0 );
 					var scale = .5*1e-2;
 					mesh.scale.set( scale, scale, scale );
+
+					geometry.center();
 
 					//mesh.castShadow = true;
 					//mesh.receiveShadow = true;
@@ -149,66 +141,6 @@
 					scene.add( mesh );
 
 				} );
-
-
-
-				/*
-				// Binary files
-
-				var material = new THREE.MeshPhongMaterial( { color: 0xAAAAAA, specular: 0x111111, shininess: 200 } );
-
-				loader.load( './models/stl/binary/pr2_head_pan.stl', function ( geometry ) {
-
-					var mesh = new THREE.Mesh( geometry, material );
-
-					mesh.position.set( 0, - 0.37, - 0.6 );
-					mesh.rotation.set( - Math.PI / 2, 0, 0 );
-					mesh.scale.set( 2, 2, 2 );
-
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-				} );
-
-				loader.load( './models/stl/binary/pr2_head_tilt.stl', function ( geometry ) {
-
-					var mesh = new THREE.Mesh( geometry, material );
-
-					mesh.position.set( 0.136, - 0.37, - 0.6 );
-					mesh.rotation.set( - Math.PI / 2, 0.3, 0 );
-					mesh.scale.set( 2, 2, 2 );
-
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-				} );
-
-				// Colored binary STL
-				loader.load( './models/stl/binary/colored.stl', function ( geometry ) {
-
-					var meshMaterial = material;
-					if (geometry.hasColors) {
-						meshMaterial = new THREE.MeshPhongMaterial({ opacity: geometry.alpha, vertexColors: THREE.VertexColors });
-					}
-
-					var mesh = new THREE.Mesh( geometry, meshMaterial );
-
-					mesh.position.set( 0.5, 0.2, 0 );
-					mesh.rotation.set( - Math.PI / 2, Math.PI / 2, 0 );
-					mesh.scale.set( 0.3, 0.3, 0.3 );
-
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-				} );
-				*/
-
 
 				// Lights
 
@@ -288,8 +220,8 @@
 				//var timer = Date.now() * 0.0005;
 				var timer = 0;
 
-				camera.position.x = Math.cos( timer ) * 3;
-				camera.position.z = Math.sin( timer ) * 3;
+				//camera.position.x = Math.cos( timer ) * 3;
+				//camera.position.z = Math.sin( timer ) * 3;
 
 				camera.lookAt( cameraTarget );
 
