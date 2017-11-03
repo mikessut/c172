@@ -49,7 +49,7 @@
 				<input id="clickMe" type="button" value="Bank Right" onclick="bank(-Math.PI / 20 );"/>
 				<br>
 				<input id="clickMe" type="button" value="Move Left" onclick="trans( -0.1 );"/>
-				<input id="clickMe" type="button" value="Movie Right" onclick="trans( 0.1 );"/>
+				<input id="clickMe" type="button" value="Move Right" onclick="trans( 0.1 );"/>
 
 			</form>
 		</div>
@@ -107,7 +107,7 @@
 				cameraTarget = new THREE.Vector3( 0, -0.25, 0 );
 
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0x72645b );
+				scene.background = new THREE.Color( 0x0000ff );
 				//scene.fog = new THREE.Fog( 0x72645b, 2, 15 );
 
 
@@ -115,13 +115,14 @@
 
 				var plane = new THREE.Mesh(
 					new THREE.PlaneBufferGeometry( 40, 40 ),
-					new THREE.MeshPhongMaterial( { color: 0x999999, specular: 0x101010 } )
+					new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x101010 } )
 				);
 				plane.rotation.x = -Math.PI/2;
+				//plane.position.y = -0.5;
 				plane.position.y = -0.5;
 				scene.add( plane );
 
-				plane.receiveShadow = true;
+				//plane.receiveShadow = true;
 
 
 				// ASCII file
@@ -131,7 +132,7 @@
 
 				loader.load( './models/stl/ascii/c172.stl', function ( geometry ) {
 
-					var material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
+					var material = new THREE.MeshPhongMaterial( { color: 0x808080, specular: 0x111111, shininess: 200 } );
 					var mesh = new THREE.Mesh( geometry, material );
 
 					//mesh.position.set( 0, - 0.25, 0.6 );
@@ -150,7 +151,17 @@
 
 				} );
 
+				// Centerline
+
+				var clMaterial = new THREE.LineDashedMaterial({color : 0xffffff, linewidth : 250, gapSize : 250, dashSize: 100 });
+				var clGeom = new THREE.Geometry();
+				clGeom.vertices.push(new THREE.Vector3(0,-.5,0));
+				clGeom.vertices.push(new THREE.Vector3(-50,-.5,0));
+				var cl = new THREE.Line(clGeom, clMaterial);
+				scene.add(cl);
+
 				// Lights
+
 
 				scene.add( new THREE.HemisphereLight( 0x443333, 0x111122 ) );
 
